@@ -10,6 +10,14 @@
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
 BOT_NAME = 'mySpider'
+'''
+FEED_EXPORT_ENCODING = 'gbk'
+FEED_URI = u'../123456.csv'
+FEED_FORMAT = 'csv'
+FEED_EXPORTERS = {
+    'csv': 'mySpider.spiders.csv_item_exporter.MyProjectCsvItemExporter',
+}
+'''
 
 SPIDER_MODULES = ['mySpider.spiders']
 NEWSPIDER_MODULE = 'mySpider.spiders'
@@ -52,9 +60,9 @@ DEFAULT_REQUEST_HEADERS = {
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-DOWNLOADER_MIDDLEWARES = {
-    'mySpider.middlewares.MyspiderDownloaderMiddleware': 543,
-}
+#DOWNLOADER_MIDDLEWARES = {
+#    'mySpider.middlewares.MyspiderDownloaderMiddleware': 543,
+#}
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html

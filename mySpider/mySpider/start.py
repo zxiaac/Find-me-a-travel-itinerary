@@ -1,2 +1,3 @@
+#!/usr/bin/env python
 from scrapy import cmdline
-cmdline.excute("scrapy crawl scenic".split())
+cmdline.execute(['scrapy' ,'crawl', 'scenic'])

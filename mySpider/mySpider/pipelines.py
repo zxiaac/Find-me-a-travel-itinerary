@@ -4,9 +4,29 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
+'''
+import boto.ec2
+conn = boto.ec2.connect_to_region("ap-northeast-1")
+reservations = conn.get_all_instances()
+'''
+import codecs
+import csv
 
+# 保存到CSV文件中
+class MyspiderPipeline(object):
 
+    def __init__(self):
+        self.file = codecs.open('a.csv', 'w', encoding='utf_8_sig')
 
+    def process_item(self, item, spider):
+        fieldnames = ['title', 'img_url', 'download_http']
+        w = csv.DictWriter(self.file, fieldnames=fieldnames)
+        w.writerow(item)
+        return item
+
+    def close_spider(self, spider):
+        self.file.close()
+'''
 import pymysql
  
  
@@ -61,3 +81,4 @@ class DBPipeline(object):
             # 出现错误时打印错误日志
             print(error)
         return item
+'''

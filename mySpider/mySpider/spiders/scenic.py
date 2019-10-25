@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 import re
-from ctrip.items import ScenicItem
+from mySpider.items import ScenicItem
  
 class ScenicSpider(scrapy.Spider):
     name = 'scenic'
