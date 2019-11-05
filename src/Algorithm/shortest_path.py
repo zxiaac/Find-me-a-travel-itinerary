@@ -35,3 +35,18 @@ def shortest_path_dijkstra_multi_source_multi_target(adj, sources, targets=None,
                 if pred is not None:
                     pred[u].append(v) # update the predecessor of u; may not find all predecessors
     return D, shortest_target
+
+# Multi source single target
+def shortest_path_dijkstra_multi_source(adj, sources, target=None, pred=None, paths=None):
+    D, _ = shortest_path_dijkstra_multi_source_multi_target(adj, sources, targets=[target], pred=pred, paths=paths)
+    return D
+
+# Single source multi target
+def shortest_path_dijkstra_multi_target(adj, source, targets=None, pred=None, paths=None):
+    D, shortest_target = shortest_path_dijkstra_multi_source_multi_target(adj, [source], targets=targets, pred=pred, paths=paths)
+    return D, shortest_target
+
+# Single source single target
+def shortest_path_dijkstra(adj, source, target=None, pred=None, paths=None):
+    D, _ = shortest_path_dijkstra_multi_source_multi_target(adj, [source], targets=[target], pred=pred, paths=paths)
+    return D
