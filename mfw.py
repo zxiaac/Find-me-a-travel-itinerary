@@ -146,6 +146,8 @@ def get_comment(href, num, name):
 
     poi_open_time = get_dl_info(infos, '开放时间')
 
+    
+
     sql = "insert into attraction(id,name) values('"+str(num)+"','" +name+"')"
     cursor.execute(sql)
     conn.commit()

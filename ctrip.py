@@ -37,7 +37,7 @@ for j in range(0, 336):
 			opener2.addheaders = [headers]
 			urllib.request.install_opener(opener2)
 			baseUrl2 = "https://you.ctrip.com"+nameUrl[i][0]
-#nameUrl[i][0]
+			#nameUrl[i][0]
 			
 
 			pagedata2 = urllib.request.urlopen(baseUrl2).read().decode("utf-8", "ignore")
@@ -58,7 +58,7 @@ for j in range(0, 336):
 			db = pymysql.connect(host='cs336.cxonjz7sctxh.us-east-2.rds.amazonaws.com', user='Esther', password='938991Lsx', port=3306,  db='Travel',charset='utf8')
 			cursor = db.cursor()
 			#sql0 =" alter table attraction change attraction name varchar(45) character utf8;"
-			sql = "insert into attraction(id,name) values('"+str(i)+"','" +nameUrl[i][1]+"')"
+			sql = "insert into attraction(id,name,duration,startTime,price) values('"+str(i)+"','" +nameUrl[i][1]+"','" +nameUrl3[i]+"','" +nameUrl4[i]+"')"
 			try:
 				#cursor.execute(sql0)
 				cursor.execute(sql)

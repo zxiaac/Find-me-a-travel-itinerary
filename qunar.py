@@ -39,28 +39,31 @@ for j in range(0, 200):
 			#pagedata2 = urllib.request.urlopen(baseUrl2)
 			
 			#duration
-			duration = '<div class="time">(.*?)</div>'
+			duration = '<div class="time">建议游玩时间：(.*?)</div>'
 			dura = re.compile(duration,re.S).findall(pagedata2)
 
-			nameUrlPat3 = '<dl class="m_desc_right_col">(.*?)</dl>'
+			nameUrlPat3 = '<dt>开放时间:</dt>.*<dd><span><p>(.*?)</p></span></dd>'
 			nameUrl3 = re.compile(nameUrlPat3, re.S).findall(pagedata2)
 			#opening hours
 
-			nameUrlPat4 = '<dd class="e_old_price" ><del><i class="rmb">&yen;</i>(.*?)</del></dd>'
+			nameUrlPat4 = '<dd class="e_now_price" ><span class="e_price_txt"><i class="rmb">&yen;</i>(.*?)</span>'
 			nameUrl4 = re.compile(nameUrlPat4, re.S).findall(pagedata2)
 			#price			
 
-			print(nameUrl[i][1])
-			print(dura[0])
-			if len(nameUrl3)!=0:
-				print(str(nameUrl3[0]))
-			if len(nameUrl4)!=0:
-				print(nameUrl4[0])
+			
 			
 			db = pymysql.connect(host='cs336.cxonjz7sctxh.us-east-2.rds.amazonaws.com', user='Esther', password='938991Lsx', port=3306,  db='Travel',charset='utf8')
+			
+
 			cursor = db.cursor()
 			#sql0 =" alter table attraction change attraction name varchar(45) character utf8;"
-			sql = "insert into attraction(id,name) values('"+str(i)+"','" +nameUrl[i][1]+"')"
+			
+			if len(nameUrl4)!=0:
+				sql = "insert into attraction(id,name,duration, city, startTime) values('"+str(i)+"','" +nameUrl[i][1]+"','" +str(dura[0])+"','" +"Beijing"+"','" +nameUrl3[0]+"')"
+			if len(nameUrl3)!=0:
+				sql = "insert into attraction(id,name,duration, city,price) values('"+str(i)+"','" +nameUrl[i][1]+"','" +str(dura[0])+"','" +"Beijing"+"','" +str(nameUrl4[0])+"')"			
+			
+			sql = "insert into attraction(id,name,duration, city,price, startTime) values('"+str(i)+"','" +nameUrl[i][1]+"','" +str(dura[0])+"','" +"Beijing"+"','" +str(nameUrl4[0])+"','" +nameUrl3[0]+"')"
 			try:
 				#cursor.execute(sql0)
 				cursor.execute(sql)
