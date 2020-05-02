@@ -15,6 +15,13 @@ public class Choose {
     // 数据库的用户名与密码，需要根据自己的设置
     static final String USER = "Esther";
     static final String PASS = "938991Lsx";
+    
+    public static boolean checkAllVisited(Attraction[] ll) {
+    	for(int i=0;i<ll.length;i++) {
+    		if(ll[i].visited==false) return false;
+    	}
+    	return true;
+    }
  
     public static void main(String[] args) {
         Connection conn = null;
@@ -108,10 +115,69 @@ public class Choose {
         //for(int j=0;j<totalattr;j++) {
         	//System.out.println(attrList[j].name);
         //}
+        //获取坐标
         for(int j=0;j<totalattr;j++) {
-        	attrList[j].position=GetPosition.getLngAndLat(attrList[j].name);
-        	System.out.println(attrList[j].name+' '+attrList[j].position);
+        	attrList[j].position=GetPosition.getLngAndLat("北京市"+attrList[j].name);
+        	//System.out.println(attrList[j].name+' '+attrList[j].position);
         }
+        
+        //将景点分天数
+        Attraction[] chosenList = new Attraction[totalattr];
+        for(int j=0;j<totalattr;j++) {
+        	chosenList[j] = new Attraction(attrList[j]);
+        }
+        
+        //将第一个景点作为起点，早上出发时间为8点
+        Attraction[][] forDays = new Attraction[totaldays][tt.schel*2];
+        int curr = 0;
+        int n = 0;
+        int m = 0;
+        //while(checkAllVisited(chosenList)==false) {
+        while(m<totaldays) {
+        	n = 0;
+        	int currHour = 8;
+        	while(n<tt.schel*2) {
+        		chosenList[curr].visited=true;
+        		forDays[m][n]=chosenList[curr];
+        		currHour +=chosenList[curr].duration;
+        		//if(currHour>20) {
+        		//	break;
+        		//}
+        		int bestweight = 1000;
+        		int travelling =0;
+        		for(int j=0;j<totalattr;j++) {
+        			if(chosenList[j].visited) continue;
+        			else {
+        				int travellingTime= GetPosition.getDrive(chosenList[curr].position.get("lng").toString(), chosenList[curr].position.get("lat").toString(), chosenList[j].position.get("lng").toString(), chosenList[j].position.get("lat").toString());
+        				int weight = travellingTime/60/60+currHour-chosenList[j].duration;
+        				if(bestweight>weight) {
+        					bestweight = weight;
+        					travelling = travellingTime;
+        					curr = j;
+        				}
+        			}
+        		}
+        		
+        		//System.out.println(forDays[m][n].name);
+        		n++;
+        		
+        		currHour+=travelling/60/60;
+        		if(currHour>24) {
+        			break;
+        		}
+        	}
+        	//System.out.println(" ");
+        	m++;
+        }
+        
+        for(m=0;m<totaldays;m++) {
+        	for (n=0;n<tt.schel*2;n++) {
+        		if(forDays[m][n]!=null)
+        			System.out.println(forDays[m][n].name);
+        	}
+        	System.out.println(" ");
+        }
+        
         
         //int totalprice = 0;
         //for(int j=0;j<totalattr;j++) {

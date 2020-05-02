@@ -40,7 +40,7 @@ public class GetPosition {
             double lat=obj.getJSONObject("result").getJSONObject("location").getDouble("lat");
             map.put("lng", lng);
             map.put("lat", lat);
-            System.out.println("经度：" + lng + "--- 纬度：" + lat);
+            //System.out.println("经度：" + lng + "--- 纬度：" + lat);
             //System.out.println(GetPosition.getCity(Double.toString(lat), Double.toString(lng)));
         }else{ 
             System.out.println("未找到相匹配的经纬度！");
@@ -69,4 +69,33 @@ public class GetPosition {
            
            return json.substring(index1+1,index2).toString();
        }
+    
+    public static int getDrive(String startlng, String startlat, String endlng, String endlat) {
+    	String url = "http://api.map.baidu.com/directionlite/v1/driving?origin="+startlat+","+startlng+"&destination="+endlat+","+endlng+"&ak="+AK;
+    	String json = loadJSON2(url);
+    	
+    	return Integer.parseInt(json);
+    }
+    
+    public static String loadJSON2 (String url) {
+        StringBuilder json = new StringBuilder();
+        try {
+            URL oracle = new URL(url);
+            URLConnection yc = oracle.openConnection();
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    yc.getInputStream(),"UTF-8"));
+            String inputLine = null;
+            while ( (inputLine = in.readLine()) != null) {
+                json.append(inputLine);
+            }
+            in.close();
+        } catch (Exception e) {
+        }
+        int index1 = json.indexOf("duration\":");
+        int index2 = json.indexOf(",\"traffic_condition");
+        
+        //System.out.println(json.toString());
+        
+        return json.substring(index1+10,index2).toString();
+    }
 }
